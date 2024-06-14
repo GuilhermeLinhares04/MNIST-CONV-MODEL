@@ -8,7 +8,7 @@ O projeto está dividido em duas partes: a primeira é a criação do modelo de 
 
 ## Executando o projeto
 
-Para executar o projeto, é necessário ter o Python instalado na máquina. Com o Python instalado, basta executar o comando `pip install -r requirements.txt` para instalar as dependências do projeto. Após a instalação das dependências, basta executar o comando `python app.py` para iniciar o servidor Flask. Com o servidor iniciado, basta acessar o endereço `http://127.0.0.1:5000` para acessar a aplicação.
+Para executar o projeto, é necessário ter o Python instalado na máquina. Com o Python instalado, basta clonar este repositório e executar o comando `pip install -r requirements.txt` para instalar as dependências do projeto. Após a instalação das dependências, basta executar o comando `python app.py` para iniciar o servidor Flask. Com o servidor iniciado, basta acessar o endereço `http://127.0.0.1:5000` para acessar a aplicação.
 
 ## Rotas API
 

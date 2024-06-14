@@ -30,7 +30,7 @@ model.compile(optimizer='adam',
               metrics=['accuracy'])
 
 # Treinar o modelo
-model.fit(train_images, train_labels, epochs=10, batch_size=64, validation_split=0.2)
+model.fit(train_images, train_labels, epochs=100, batch_size=64, validation_split=0.2)
 
 # Salvar os pesos
 model.save('pesos.h5')
