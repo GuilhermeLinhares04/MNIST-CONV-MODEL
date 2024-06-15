@@ -3,22 +3,26 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Digit Recognition</title>
+    <title>Reconhecimento de Dígitos</title>
 </head>
-<body>
-    <h1>Upload a digit image</h1>
+<body>Faça o upload de uma imagem de um dígito manuscrito</h1>
     <form method="POST" enctype="multipart/form-data">
+        <label for="model_type">Escolha o modelo:</label>
+        <select name="model_type" id="model_type">
+            <option value="cnn">Convolucional</option>
+            <option value="linear">Linear</option>
+        </select>
         <input type="file" name="file" accept="image/*" required>
-        <button type="submit">Predict</button>
-        <button type="button" onclick="clearOutput()">Clear</button>
+        <button type="submit">Prever</button>
+        <button type="button" onclick="clearPrediction()">Limpar</button>
     </form>
     {% if digit is not none %}
-        <h2>Predicted Digit: {{ digit }}</h2>
+        <h2>Dígito predito utilizado o modelo {{ model_type }}: {{ digit }}</h2>
     {% endif %}
-    
+
     <script>
-        function clearOutput() {
-            document.querySelector('h2').textContent = '';
+        function clearPrediction() {
+            document.getElementById("digit").innerHTML = "";
         }
     </script>
 </body>

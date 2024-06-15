@@ -6,7 +6,8 @@ from PIL import Image
 import io
 
 app = Flask(__name__)
-model = load_model('pesos.h5')
+model_cnn = load_model('pesos.h5')
+model_linear = load_model('pesos_linear.h5')
 
 # Função para preparar a imagem para ser usada no modelo
 def prepare_image(image):
@@ -17,16 +18,30 @@ def prepare_image(image):
     image = image.reshape((1, 28, 28, 1)).astype('float32') / 255
     return image
 
-# Rota para fazer a predição
-@app.route('/predict', methods=['POST'])
-def predict():
+# Rota para prever o dígito usando o modelo CNN
+@app.route('/predict_cnn', methods=['POST'])
+def predict_cnn():
     if 'file' not in request.files:
         return jsonify({'error': 'No file provided'}), 400
 
     file = request.files['file']
     image = Image.open(io.BytesIO(file.read()))
     prepared_image = prepare_image(image)
-    prediction = model.predict(prepared_image)
+    prediction = model_cnn.predict(prepared_image)
+    digit = np.argmax(prediction)
+
+    return jsonify({'digit': int(digit)})
+
+# Rota para prever o dígito usando o modelo linear
+@app.route('/predict_linear', methods=['POST'])
+def predict_linear():
+    if 'file' not in request.files:
+        return jsonify({'error': 'No file provided'}), 400
+
+    file = request.files['file']
+    image = Image.open(io.BytesIO(file.read()))
+    prepared_image = prepare_image(image)
+    prediction = model_linear.predict(prepared_image)
     digit = np.argmax(prediction)
 
     return jsonify({'digit': int(digit)})
@@ -39,14 +54,20 @@ def index():
             return 'No file provided', 400
 
         file = request.files['file']
+        model_type = request.form['model_type']
         image = Image.open(io.BytesIO(file.read()))
         prepared_image = prepare_image(image)
-        prediction = model.predict(prepared_image)
+        
+        if model_type == 'cnn':
+            prediction = model_cnn.predict(prepared_image)
+        else:
+            prediction = model_linear.predict(prepared_image)
+            
         digit = np.argmax(prediction)
+        
+        return render_template('index.html', digit=digit, model_type=model_type)
 
-        return render_template('index.html', digit=digit)
-
-    return render_template('index.html', digit=None)
+    return render_template('index.html', digit=None, model_type=None)
 
 if __name__ == '__main__':
     app.run(debug=True)
